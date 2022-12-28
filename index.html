@@ -217,7 +217,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-12-28 20:46:42 / Modified: 21:36:50" itemprop="dateCreated datePublished" datetime="2022-12-28T20:46:42+08:00">2022-12-28</time>
+              <time title="Created: 2022-12-28 20:46:42 / Modified: 21:42:31" itemprop="dateCreated datePublished" datetime="2022-12-28T20:46:42+08:00">2022-12-28</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -240,64 +240,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Redis学习笔记-一"><a href="#Redis学习笔记-一" class="headerlink" title="Redis学习笔记(一)"></a>Redis学习笔记(一)</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><ul>
-<li>值类型：string、hash、list、set、zset、Bitmaps、HyperLogLog、GEO等多重数据解耦</li>
-<li>数据存放在内存中，而且还可以将数据利用快照和日志的形式保存在硬盘上，保证数据不会丢失</li>
-<li>提供了键过期、发布订阅、事务、流水线、Lua脚本等附加功能。</li>
-</ul>
-<h2 id="Redis的特性"><a href="#Redis的特性" class="headerlink" title="Redis的特性"></a>Redis的特性</h2><ol>
-<li>速度快（读写性能可以达到10万&#x2F;秒）<ul>
-<li>数据存放在内存</li>
-<li>使用C语言编写，一般来说C语言实现的程序距离操作系统更近，执行速度相对会更快</li>
-<li>Redis使用了单线程架构，预防了多线程可能产生的竞争问题</li>
-<li>源码的优化</li>
-</ul>
-</li>
-<li>基于键值对的数据结构服务器（丰富的value类型） <ul>
-<li>string</li>
-<li>list</li>
-<li>set</li>
-<li>hash</li>
-<li>zset</li>
-</ul>
-</li>
-<li>丰富的功能<ul>
-<li>键过期</li>
-<li>发布订阅</li>
-<li>Lua脚本支持</li>
-<li>简单的事务共呢个</li>
-<li>流水线(Pipeline)功能</li>
-</ul>
-</li>
-<li>简单稳定<ul>
-<li>源码简单</li>
-<li>单线程模型</li>
-<li>不依赖操作系统中的类库</li>
-</ul>
-</li>
-<li>客户端语言多（几乎涵盖了主流的变成语言）</li>
-<li>持久化<ul>
-<li>RDB</li>
-<li>AOF</li>
-</ul>
-</li>
-<li>主从复制</li>
-<li>高可用和分布式<ul>
-<li>2.8版本提供高可用实现Redis Sentinel</li>
-<li>3.0版本提供分布式实现Redis Cluster</li>
-</ul>
-</li>
-</ol>
-<h2 id="Redis使用场景"><a href="#Redis使用场景" class="headerlink" title="Redis使用场景"></a>Redis使用场景</h2><ol>
-<li>缓存</li>
-<li>排行榜系统</li>
-<li>计数器应用</li>
-<li>社交网络</li>
-<li>简单消息队列<br>……</li>
-</ol>
-<h2 id="Redis安装-Linux"><a href="#Redis安装-Linux" class="headerlink" title="Redis安装(Linux)"></a>Redis安装(Linux)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 下载Redis</span></span><br><span class="line">$ wget https://download.redis.io/releases/redis-6.2.8.tar.gz</span><br><span class="line"><span class="comment"># 2. 解压redis</span></span><br><span class="line">$ tar -zxvf redis-6.2.8.tar.gz</span><br><span class="line"><span class="comment"># 3. 编译(需要安装gcc)</span></span><br><span class="line">$ <span class="built_in">cd</span> redis-6.2.8</span><br><span class="line">$ make </span><br><span class="line"><span class="comment"># 4. 安装，默认安装位置为/usr/local/bin下面</span></span><br><span class="line">$ make install</span><br><span class="line"><span class="comment"># 5. 修改配置文件，原配置文件位于redis解压目录下redis.conf</span></span><br><span class="line"><span class="comment"># 个人习惯是将redis解压目录下的redis.conf复制到/etc/redis文件夹下再修改</span></span><br><span class="line"><span class="comment"># 6. 启动</span></span><br><span class="line">$ redis-server /etc/redis/redis_6379.conf</span><br><span class="line"><span class="comment"># 7. 通过systemd管理Redis(本人系统为archlinux)</span></span><br><span class="line"><span class="comment"># 修改/usr/lib/systemd/system/redis.service</span></span><br><span class="line"><span class="comment"># vim /lib/systemd/system/redis.service，内容如下</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Redis</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=fork</span><br><span class="line">ExecStart=/usr/local/bin/redis-server /etc/redis/6379.conf  --daemonize no</span><br><span class="line">ExecStop=/usr/local/bin/redis-cli -p 6379 shutdown</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># 现在可以通过systemctl start/status/stop/enable/disable redis.service来管理redis</span></span><br></pre></td></tr></table></figure>
-<p><em>注：Redis官方不提供windows版本，可以通过虚拟机或者WSL使用，也可以下载微软自己的Redis版本，微软官方技术组维护一个redis分支：<a target="_blank" rel="noopener" href="https://github.com/microsoftarchive/redis">https://github.com/microsoftarchive/redis</a></em> </p>
-
+          <p>Redis简介、特性、常用使用场景、以及安装</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/%E6%95%B0%E6%8D%AE%E5%BA%93/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%80/">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
